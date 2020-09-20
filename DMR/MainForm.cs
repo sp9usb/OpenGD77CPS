@@ -454,22 +454,22 @@ namespace DMR
 			this.tsmiExit.Size = new Size(108, 22);
 			this.tsmiExit.Text = "Exit";
 			this.tsmiExit.Click += this.tsmiExit_Click;
-			this.tsmiSetting.DropDownItems.AddRange(new ToolStripItem[15]
+			this.tsmiSetting.DropDownItems.AddRange(new ToolStripItem[7]
 			{
-				this.tsmiDeviceInfo,
+				//this.tsmiDeviceInfo,
 				this.tsmiBootItem,
-				this.tsmiMenu,
-				this.tsmiNumKeyContact,
+				//this.tsmiMenu,
+				//this.tsmiNumKeyContact,
 				this.tsmiGerneralSet,
-				this.tsmiButton,
-				this.tsmiTextMsg,
-				this.tsmiEncrypt,
-				this.tsmiSignaling,
+				//this.tsmiButton,
+				//this.tsmiTextMsg,
+				//this.tsmiEncrypt,
+				//this.tsmiSignaling,
 				this.tsmiContact,
 				this.tsmiGrpRxList,
 				this.tsmiZone,
 				this.tsmiChannels,
-				this.tsmiScan,
+				//this.tsmiScan,
 				this.tsmiVfos
 			});
 			this.tsmiSetting.Name = "tsmiSetting";
@@ -1329,7 +1329,7 @@ namespace DMR
 			Version ver = AssemblyName.GetAssemblyName(System.Reflection.Assembly.GetExecutingAssembly().Location).Version;//.ToString();
 			DateTime dt = new DateTime(2000, 1, 1, 0, 0, 0).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
 
-			return MainForm.PRODUCT_NAME + " (Build date " + dt.ToString("yyyyMMdd")+ ")";
+			return MainForm.PRODUCT_NAME + " (Build date " + dt.ToString("yyyy.MM.dd")+ ")";
 		}
 
 
@@ -1443,7 +1443,7 @@ namespace DMR
 			return null;
 		}
 
-		private Form method_7(TreeNode treeNode_0, bool bool_0)
+		private Form treeviewDoubleClickHandler(TreeNode treeNode_0, bool bool_0)
 		{
 			TreeNodeItem treeNodeItem = treeNode_0.Tag as TreeNodeItem;
 			if (treeNodeItem != null)
@@ -1476,6 +1476,29 @@ namespace DMR
 				}
 				if (treeNodeItem.Type != null)
 				{
+					if (treeNodeItem.Type == typeof(TextMsgForm) || 
+						treeNodeItem.Type == typeof(ButtonForm) ||
+						treeNodeItem.Type == typeof(DigitalKeyContactForm) ||
+						treeNodeItem.Type == typeof(MenuForm) ||
+						treeNodeItem.Type == typeof(DeviceInfoForm) ||
+						treeNodeItem.Type == typeof(ScanBasicForm) ||
+						treeNodeItem.Type == typeof(DtmfContactForm) ||
+						treeNodeItem.Type == typeof(DtmfForm) ||
+						treeNodeItem.Type == typeof(SignalingBasicForm) ||
+						treeNodeItem.Type == typeof(EncryptForm) ||
+						treeNodeItem.Type == typeof(NormalScanForm) ||
+						treeNodeItem.Type == typeof(EmergencyForm)
+						)
+					{
+						MessageBox.Show("This feature is not supported in the OpenGD77 firmware");
+						//return null;
+					}
+
+					if (treeNodeItem.Type == typeof(ZoneBasicForm))
+					{
+						return null;
+					}
+
 					Form form2 = (Form)Activator.CreateInstance(treeNodeItem.Type);
 					form2.MdiParent = this;
 					IDisp disp2 = form2 as IDisp;
@@ -1963,7 +1986,7 @@ namespace DMR
 				treeNodeItem = (treeNode.Tag as TreeNodeItem);
 				if (treeNodeItem != null)
 				{
-					this.method_7(treeNode, true);
+					this.treeviewDoubleClickHandler(treeNode, true);
 				}
 			}
 		}
@@ -2185,6 +2208,7 @@ namespace DMR
 					else if (treeNodeItem.SubType == typeof(ZoneForm))
 					{
 						this.AddTreeViewNode(selectedNode.Nodes, text, new TreeNodeItem(this.cmsSub, treeNodeItem.SubType, null, 0, num, 25, treeNodeItem.Data));
+						this.DispChildForm(typeof(ZoneForm), num);
 					}
 					else if (treeNodeItem.SubType == typeof(ChannelForm))
 					{
@@ -2192,10 +2216,12 @@ namespace DMR
 						ChannelForm.Channel channel = (ChannelForm.Channel)treeNodeItem.Data;
 						channel.SetChMode(num, ChannelForm.ChModeE.Analog);
 						channel.SetDefaultFreq(num);
+						this.DispChildForm(typeof(ChannelForm), num);
 					}
 					else if (treeNodeItem.SubType == typeof(RxGroupListForm))
 					{
 						this.AddTreeViewNode(selectedNode.Nodes, text, new TreeNodeItem(this.cmsSub, treeNodeItem.SubType, null, 0, num, 19, treeNodeItem.Data));
+						this.DispChildForm(typeof(RxGroupListForm), num);
 					}
 					else if (treeNodeItem.SubType == typeof(EmergencyForm))
 					{
@@ -2580,6 +2606,7 @@ namespace DMR
 					{
 						selectedNode.Expand();
 					}
+					this.DispChildForm(typeof(ContactForm), num);
 				}
 			}
 		}
@@ -2607,6 +2634,7 @@ namespace DMR
 					{
 						selectedNode.Expand();
 					}
+					this.DispChildForm(typeof(ContactForm), num);
 				}
 			}
 		}
@@ -2634,6 +2662,7 @@ namespace DMR
 					{
 						selectedNode.Expand();
 					}
+					this.DispChildForm(typeof(ContactForm), num);
 				}
 			}
 		}
@@ -2811,7 +2840,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(DeviceInfoForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2820,7 +2849,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(GeneralSetForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2829,7 +2858,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(ButtonForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2838,7 +2867,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(MenuForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2847,7 +2876,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(BootItemForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2856,7 +2885,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(DigitalKeyContactForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2865,7 +2894,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(TextMsgForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, false);
+				this.treeviewDoubleClickHandler(treeNode, false);
 			}
 		}
 
@@ -2874,7 +2903,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(EncryptForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, false);
+				this.treeviewDoubleClickHandler(treeNode, false);
 			}
 		}
 
@@ -2883,7 +2912,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(SignalingBasicForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, false);
+				this.treeviewDoubleClickHandler(treeNode, false);
 			}
 		}
 
@@ -2892,7 +2921,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(DtmfForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, false);
+				this.treeviewDoubleClickHandler(treeNode, false);
 			}
 		}
 
@@ -2901,7 +2930,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(EmergencyForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, false);
+				this.treeviewDoubleClickHandler(treeNode, false);
 			}
 		}
 
@@ -2910,7 +2939,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(DtmfContactForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, false);
+				this.treeviewDoubleClickHandler(treeNode, false);
 			}
 		}
 
@@ -2919,7 +2948,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(ContactsForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2928,7 +2957,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(ContactsForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2937,7 +2966,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(RxGroupListForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2946,7 +2975,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(ZoneBasicForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2955,7 +2984,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(ZoneForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2964,7 +2993,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(ChannelsForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2973,7 +3002,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(ScanBasicForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2982,7 +3011,7 @@ namespace DMR
 			TreeNode treeNode = this.method_9(typeof(NormalScanForm), this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -2991,7 +3020,7 @@ namespace DMR
 			TreeNode treeNode = this.GetTreeNodeByTypeAndIndex(typeof(VfoForm), 0,this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -3000,7 +3029,7 @@ namespace DMR
 			TreeNode treeNode = this.GetTreeNodeByTypeAndIndex(typeof(VfoForm), 1,this.tvwMain.Nodes);
 			if (treeNode != null)
 			{
-				this.method_7(treeNode, true);
+				this.treeviewDoubleClickHandler(treeNode, true);
 			}
 		}
 
@@ -3507,10 +3536,11 @@ namespace DMR
 			byte[] array = new byte[Settings.SPACE_DEVICE_INFO];
 			Array.Copy(eerom, Settings.ADDR_DEVICE_INFO, array, 0, array.Length);
 			DeviceInfoForm.data = (DeviceInfoForm.DeviceInfo)Settings.smethod_62(array, DeviceInfoForm.data.GetType());
-			Settings.MIN_FREQ[0] = ushort.Parse(DeviceInfoForm.data.MinFreq);
-			Settings.MAX_FREQ[0] = ushort.Parse(DeviceInfoForm.data.MaxFreq);
-			Settings.MIN_FREQ[1] = ushort.Parse(DeviceInfoForm.data.MinFreq2);
-			Settings.MAX_FREQ[1] = ushort.Parse(DeviceInfoForm.data.MaxFreq2);
+			// Force frequency ranges to match the OpenGD77 firmware, rather than using whatever is in the users codeplug file.
+			Settings.MIN_FREQ[0] = 380;// ushort.Parse(DeviceInfoForm.data.MinFreq);
+			Settings.MAX_FREQ[0] = 564;// ushort.Parse(DeviceInfoForm.data.MaxFreq);
+			Settings.MIN_FREQ[1] = 127;// ushort.Parse(DeviceInfoForm.data.MinFreq2);
+			Settings.MAX_FREQ[1] = 282;// ushort.Parse(DeviceInfoForm.data.MaxFreq2);
 			array = new byte[Settings.SPACE_GENERAL_SET];
 			Array.Copy(eerom, Settings.ADDR_GENERAL_SET, array, 0, array.Length);
 			GeneralSetForm.data = (GeneralSetForm.GeneralSet)Settings.smethod_62(array, GeneralSetForm.data.GetType());
@@ -3720,7 +3750,7 @@ namespace DMR
 			TreeNode treeNodeByTypeAndIndex = this.GetTreeNodeByTypeAndIndex(type, index, this.tvwMain.Nodes);
 			if (treeNodeByTypeAndIndex != null)
 			{
-				this.method_7(treeNodeByTypeAndIndex, true);
+				this.treeviewDoubleClickHandler(treeNodeByTypeAndIndex, true);
 			}
 		}
 
@@ -3794,24 +3824,24 @@ namespace DMR
 		{
 			this.lstTreeNodeItem.Clear();
 			this.lstTreeNodeItem.Add(new TreeNodeItem(null, null, null, 0, -1, 18, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(DeviceInfoForm), null, 0, -1, 20, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(DeviceInfoForm), null, 0, -1, 20, null));
 			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(BootItemForm), null, 0, -1, 30, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(MenuForm), null, 0, -1, 38, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(DigitalKeyContactForm), null, 0, -1, 15, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(MenuForm), null, 0, -1, 38, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(DigitalKeyContactForm), null, 0, -1, 15, null));
 			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(GeneralSetForm), null, 0, -1, 5, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(ButtonForm), null, 0, -1, 4, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(TextMsgForm), null, 0, -1, 22, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(EncryptForm), null, 0, -1, 35, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(SignalingBasicForm), null, 0, -1, 16, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(DtmfForm), null, 0, -1, 39, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(this.cmsGroup, null, typeof(EmergencyForm), 32, -1, 17, EmergencyForm.data));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(ButtonForm), null, 0, -1, 4, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(TextMsgForm), null, 0, -1, 22, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(EncryptForm), null, 0, -1, 35, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(SignalingBasicForm), null, 0, -1, 16, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(DtmfForm), null, 0, -1, 39, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(this.cmsGroup, null, typeof(EmergencyForm), 32, -1, 17, EmergencyForm.data));
 			this.lstTreeNodeItem.Add(new TreeNodeItem(null, null, null, 0, -1, 17, null));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(DtmfContactForm), null, 0, -1, 49, null));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(null, typeof(DtmfContactForm), null, 0, -1, 49, null));
 			this.lstTreeNodeItem.Add(new TreeNodeItem(this.cmsGroupContact, typeof(ContactsForm), typeof(ContactForm), 1024, -1, 17, ContactForm.data));
 			this.lstTreeNodeItem.Add(new TreeNodeItem(this.cmsGroup, null, typeof(RxGroupListForm), RxListData.CNT_RX_LIST, -1, 17, RxGroupListForm.data));
 			this.lstTreeNodeItem.Add(new TreeNodeItem(this.cmsGroup, typeof(ZoneBasicForm), typeof(ZoneForm), ZoneForm.NUM_ZONES, -1, 16, ZoneForm.data));
 			this.lstTreeNodeItem.Add(new TreeNodeItem(this.cmsGroup, typeof(ChannelsForm), typeof(ChannelForm), ChannelForm.CurCntCh, -1, 17, ChannelForm.data));
-			this.lstTreeNodeItem.Add(new TreeNodeItem(this.cmsGroup, typeof(ScanBasicForm), typeof(NormalScanForm), 64, -1, 16, NormalScanForm.data));
+			//this.lstTreeNodeItem.Add(new TreeNodeItem(this.cmsGroup, typeof(ScanBasicForm), typeof(NormalScanForm), 64, -1, 16, NormalScanForm.data));
 			this.lstTreeNodeItem.Add(new TreeNodeItem(null, null, null, 0, -1, 17, null));
 			int num = 0;
 			for (int i = 0; i < 2; i++)
@@ -3841,24 +3871,24 @@ namespace DMR
 			dataTable.Columns.Add("Name");
 			dataTable.Columns.Add("ParentId");
 			dataTable.Rows.Add("00", "Model", "-1");
-			dataTable.Rows.Add("0001", "BasicInfo", "00");
+			//dataTable.Rows.Add("0001", "BasicInfo", "00");
 			dataTable.Rows.Add("0002", "BootItem", "00");
-			dataTable.Rows.Add("0003", "Menu", "00");
-			dataTable.Rows.Add("0004", "NumKeyAssign", "00");
+			//dataTable.Rows.Add("0003", "Menu", "00");
+			//dataTable.Rows.Add("0004", "NumKeyAssign", "00");
 			dataTable.Rows.Add("0005", "GeneralSetting", "00");
-			dataTable.Rows.Add("0006", "Buttons", "00");
-			dataTable.Rows.Add("0007", "TextMsg", "00");
-			dataTable.Rows.Add("0008", "Pivacy", "00");
-			dataTable.Rows.Add("0009", "SignalingSys", "00");
-			dataTable.Rows.Add("000900", "DtmfSignal", "0009");
-			dataTable.Rows.Add("000901", "EmergencySys", "0009");
+			//dataTable.Rows.Add("0006", "Buttons", "00");
+			//dataTable.Rows.Add("0007", "TextMsg", "00");
+			//dataTable.Rows.Add("0008", "Pivacy", "00");
+			//dataTable.Rows.Add("0009", "SignalingSys", "00");
+			//dataTable.Rows.Add("000900", "DtmfSignal", "0009");
+			//dataTable.Rows.Add("000901", "EmergencySys", "0009");
 			dataTable.Rows.Add("0011", "Contact", "00");
-			dataTable.Rows.Add("001100", "DtmfContact", "0011");
+			//dataTable.Rows.Add("001100", "DtmfContact", "0011");
 			dataTable.Rows.Add("001101", "DigitalContact", "0011");
 			dataTable.Rows.Add("0012", "RxGroupList", "00");
 			dataTable.Rows.Add("0013", "Zone", "00");
 			dataTable.Rows.Add("0014", "Channel", "00");
-			dataTable.Rows.Add("0015", "Scan", "00");
+			//dataTable.Rows.Add("0015", "Scan", "00");
 			dataTable.Rows.Add("0016", "VFO", "00");
 			dataTable.Rows.Add("001600", "VFOA", "0016");
 			dataTable.Rows.Add("001601", "VFOB", "0016");
@@ -3904,7 +3934,7 @@ namespace DMR
 		public void InitDynamicNode()
 		{
 			TreeNode parentNode = this.method_8(typeof(EmergencyForm), this.tvwMain.Nodes);
-			this.InitEmergencySystems(parentNode);
+			//this.InitEmergencySystems(parentNode);
 			parentNode = this.method_9(typeof(ContactsForm), this.tvwMain.Nodes);
 			this.InitDigitContacts(parentNode);
 			parentNode = this.method_8(typeof(RxGroupListForm), this.tvwMain.Nodes);
@@ -3914,7 +3944,7 @@ namespace DMR
 			parentNode = this.method_9(typeof(ChannelsForm), this.tvwMain.Nodes);
 			this.InitChannels(parentNode);
 			parentNode = this.method_9(typeof(ScanBasicForm), this.tvwMain.Nodes);
-			this.InitScans(parentNode);
+			//this.InitScans(parentNode);
 		}
 
 		public void InitChannelsImportNodes()

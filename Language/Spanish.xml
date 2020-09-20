@@ -93,6 +93,7 @@
 			<Control Id="chkVox" Text="VOX" />
 			<Control Id="chkAutoScan" Text="Auto Exploración" />
 			<Control Id="lblChName" Text="CH" />
+      <Control Id="chkOpenGD77ScanAllSkip" Text="Scan: All skip" />
       <Control Id="chkOpenGD77ScanZoneSkip" Text="Scan: Zone skip" />
 			<Control Id="lblChMode" Text="Modo" />
 			<Control Id="lblTot" Text="TOT [s]" />
@@ -436,6 +437,8 @@
       <MenuItem Id="tsmiContactsDownload" Text="Descargar contactos" />
       <MenuItem Id="tsmiDMRID" Text="DMR ID" />
       <MenuItem Id="tsmiCalibration" Text="Calibración" />
+      <MenuItem Id="tsmiOpenGD77" Text="OpenGD77 support" />
+      <MenuItem Id="tsmiFirmwareLoader" Text="Firmware loader" />
     </MenuStrip>
 		<ContextMenuStrip>
 			<MenuItem Id="tsmiAdd" Text="Añadir" />
@@ -655,6 +658,8 @@
 			<Control Id="chkLoneWoker" Text="Trabajador Aislado" />
 			<Control Id="chkVox" Text="VOX" />
 			<Control Id="chkAutoScan" Text="Auto Exploración" />
+      <Control Id="chkOpenGD77ScanAllSkip" Text="Scan: All skip" />
+      <Control Id="chkOpenGD77ScanZoneSkip" Text="Scan: Zone skip" />
 			<Control Id="lblChName" Text="VFO" />
 			<Control Id="lblChMode" Text="Modo" />
 			<Control Id="lblTot" Text="TOT [s]" />
@@ -802,7 +807,7 @@
     <Item Id="DMRIDWrite" Text="Escribiendo base de datos DMR ID a GD-77" />
     <Item Id="CalibrationRead" Text="Leyendo datos de calibración desde GD-77" />
     <Item Id="CalibrationWrite" Text="Escribiendo datos de calibración a GD-77" />
-    <Item Id="IdAlreadyExists" Text="ID ya existe!" />
+    <Item Id="IdAlreadyExists" Text="ID / TS ya existe!" />
     <Item Id="IdOutOfRange" Text="ID fuera de rango!" />
     <Item Id="IdNotEmpty" Text="ID no puede estar vacío!" />
     <Item Id="ContactNameDuplicate" Text="Aviso. Nombre de contacto duplicado." />

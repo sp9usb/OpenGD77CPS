@@ -896,7 +896,7 @@ namespace DMR
 
 		private void InitializeComponent()
 		{
-			ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof(ZoneForm));
+
 			this.pnlZone = new CustomPanel();
 			this.tsrZone = new ToolStrip();
 			this.tslblInfo = new ToolStripLabel();
@@ -974,28 +974,29 @@ namespace DMR
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new Size(6, 25);
 			this.tsbtnFirst.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.tsbtnFirst.Image = (Image)componentResourceManager.GetObject("tsbtnFirst.Image");
+
 			this.tsbtnFirst.ImageTransparentColor = Color.Magenta;
 			this.tsbtnFirst.Name = "tsbtnFirst";
 			this.tsbtnFirst.Size = new Size(23, 22);
 			this.tsbtnFirst.Text = "First";
 			this.tsbtnFirst.Click += new EventHandler(this.tsmiFirst_Click);
 			this.tsbtnPrev.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.tsbtnPrev.Image = (Image)componentResourceManager.GetObject("tsbtnPrev.Image");
+
 			this.tsbtnPrev.ImageTransparentColor = Color.Magenta;
 			this.tsbtnPrev.Name = "tsbtnPrev";
 			this.tsbtnPrev.Size = new Size(23, 22);
 			this.tsbtnPrev.Text = "Previous";
 			this.tsbtnPrev.Click += new EventHandler(this.tsmiPrev_Click);
 			this.tsbtnNext.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.tsbtnNext.Image = (Image)componentResourceManager.GetObject("tsbtnNext.Image");
+
 			this.tsbtnNext.ImageTransparentColor = Color.Magenta;
 			this.tsbtnNext.Name = "tsbtnNext";
 			this.tsbtnNext.Size = new Size(23, 22);
 			this.tsbtnNext.Text = "Next";
 			this.tsbtnNext.Click += new EventHandler(this.tsmiNext_Click);
+
 			this.tsbtnLast.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.tsbtnLast.Image = (Image)componentResourceManager.GetObject("tsbtnLast.Image");
+
 			this.tsbtnLast.ImageTransparentColor = Color.Magenta;
 			this.tsbtnLast.Name = "tsbtnLast";
 			this.tsbtnLast.Size = new Size(23, 22);
@@ -1004,14 +1005,14 @@ namespace DMR
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new Size(6, 25);
 			this.tsbtnAdd.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.tsbtnAdd.Image = (Image)componentResourceManager.GetObject("tsbtnAdd.Image");
+
 			this.tsbtnAdd.ImageTransparentColor = Color.Magenta;
 			this.tsbtnAdd.Name = "tsbtnAdd";
 			this.tsbtnAdd.Size = new Size(23, 22);
 			this.tsbtnAdd.Text = "Add..";
 			this.tsbtnAdd.Click += new EventHandler(this.tsmiAdd_Click);
 			this.tsbtnDel.DisplayStyle = ToolStripItemDisplayStyle.Image;
-			this.tsbtnDel.Image = (Image)componentResourceManager.GetObject("tsbtnDel.Image");
+			
 			this.tsbtnDel.ImageTransparentColor = Color.Magenta;
 			this.tsbtnDel.Name = "tsbtnDel";
 			this.tsbtnDel.Size = new Size(23, 22);
@@ -1052,6 +1053,8 @@ namespace DMR
 			this.tsmiNext.Size = new Size(159, 22);
 			this.tsmiNext.Text = "Next";
 			this.tsmiNext.Click += new EventHandler(this.tsmiNext_Click);
+			this.tsmiNext.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N;
+
 			this.tsmiLast.Name = "tsmiLast";
 			this.tsmiLast.Size = new Size(159, 22);
 			this.tsmiLast.Text = "Last";
@@ -1082,7 +1085,7 @@ namespace DMR
 			this.txtName.Location = new Point(316, 62);
 			this.txtName.MaxByteLength = 0;
 			this.txtName.Name = "txtName";
-			this.txtName.Size = new Size(115, 23);
+			this.txtName.Size = new Size(150, 23);
 			this.txtName.TabIndex = 1;
 			this.txtName.Leave += new EventHandler(this.txtName_Leave);
 			this.grpSelected.Controls.Add(this.lstSelected);
@@ -1096,10 +1099,10 @@ namespace DMR
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lstSelected.FormattingEnabled = true;
 			this.lstSelected.ItemHeight = 16;
-			this.lstSelected.Location = new Point(47, 37);
+			this.lstSelected.Location = new Point(27, 37);
 			this.lstSelected.Name = "lstSelected";
 			this.lstSelected.SelectionMode = SelectionMode.MultiExtended;
-			this.lstSelected.Size = new Size(120, 324);
+			this.lstSelected.Size = new Size(160, 324);
 			this.lstSelected.TabIndex = 5;
 			this.lstSelected.SelectedIndexChanged += new EventHandler(this.lstSelected_SelectedIndexChanged);
 			this.lstSelected.DoubleClick += new EventHandler(this.lstSelected_DoubleClick);
@@ -1123,10 +1126,10 @@ namespace DMR
 | System.Windows.Forms.AnchorStyles.Left)));
             this.lstUnselected.FormattingEnabled = true;
 			this.lstUnselected.ItemHeight = 16;
-			this.lstUnselected.Location = new Point(52, 37);
+			this.lstUnselected.Location = new Point(32, 37);
 			this.lstUnselected.Name = "lstUnselected";
 			this.lstUnselected.SelectionMode = SelectionMode.MultiExtended;
-			this.lstUnselected.Size = new Size(120, 324);
+			this.lstUnselected.Size = new Size(160, 324);
 			this.lstUnselected.TabIndex = 2;
 			this.btnDel.Location = new Point(327, 310);
 			this.btnDel.Name = "btnDel";
@@ -1294,9 +1297,19 @@ namespace DMR
 			this.txtName.Text = ZoneForm.data[index].Name;
 		}
 
+		private ComponentResourceManager componentResourceManager;
+
 		public ZoneForm()
 		{
+			componentResourceManager = new ComponentResourceManager(typeof(ZoneForm));
 			this.InitializeComponent();
+			this.tsbtnDel.Image = (Image)componentResourceManager.GetObject("tsbtnDel.Image");
+			this.tsbtnFirst.Image = (Image)componentResourceManager.GetObject("tsbtnFirst.Image");
+			this.tsbtnLast.Image = (Image)componentResourceManager.GetObject("tsbtnLast.Image");
+			this.tsbtnPrev.Image = (Image)componentResourceManager.GetObject("tsbtnPrev.Image");
+			this.tsbtnAdd.Image = (Image)componentResourceManager.GetObject("tsbtnAdd.Image");
+			this.tsbtnNext.Image = (Image)componentResourceManager.GetObject("tsbtnNext.Image");
+
 			this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);// Roger Clark. Added correct icon on main form!
 			base.Scale(Settings.smethod_6());
 		}
@@ -1386,7 +1399,7 @@ namespace DMR
 			return false;
 		}
 
-		private void btnUp_Click(object sender, EventArgs e)
+		private void btnUp_Click(object sender = null, EventArgs e = null)
 		{
 			int num = 0;
 			int num2 = 0;
@@ -1407,7 +1420,7 @@ namespace DMR
 			this.method_4();
 		}
 
-		private void btnDown_Click(object sender, EventArgs e)
+		private void btnDown_Click(object sender = null, EventArgs e = null)
 		{
 			int num = 0;
 			int num2 = 0;
@@ -1535,22 +1548,40 @@ namespace DMR
 			this.DispData();
 		}
 
-		private void tsmiPrev_Click(object sender, EventArgs e)
+
+		private void handlePreviousClick()
 		{
 			this.SaveData();
-			this.Node = this.Node.PrevNode;
-			TreeNodeItem treeNodeItem = this.Node.Tag as TreeNodeItem;
-			base.Tag = treeNodeItem.Index;
-			this.DispData();
+			if (this.Node.PrevNode != null)
+			{
+				this.Node = this.Node.PrevNode;
+				TreeNodeItem treeNodeItem = this.Node.Tag as TreeNodeItem;
+				base.Tag = treeNodeItem.Index;
+				this.DispData();
+			}
+		}
+
+		private void tsmiPrev_Click(object sender, EventArgs e)
+		{
+			handlePreviousClick();
+		}
+
+		private void handleNextClick()
+		{
+
+			this.SaveData();
+			if (this.Node.NextNode != null)
+			{
+				this.Node = this.Node.NextNode;
+				TreeNodeItem treeNodeItem = this.Node.Tag as TreeNodeItem;
+				base.Tag = treeNodeItem.Index;
+				this.DispData();
+			}
 		}
 
 		private void tsmiNext_Click(object sender, EventArgs e)
 		{
-			this.SaveData();
-			this.Node = this.Node.NextNode;
-			TreeNodeItem treeNodeItem = this.Node.Tag as TreeNodeItem;
-			base.Tag = treeNodeItem.Index;
-			this.DispData();
+			handleNextClick();
 		}
 
 		private void tsmiLast_Click(object sender, EventArgs e)
@@ -1562,7 +1593,7 @@ namespace DMR
 			this.DispData();
 		}
 
-		private void tsmiAdd_Click(object sender, EventArgs e)
+		private void handleInsertClick()
 		{
 			if (this.Node.Parent.Nodes.Count < NUM_ZONES)
 			{
@@ -1585,7 +1616,12 @@ namespace DMR
 			}
 		}
 
-		private void tsmiDel_Click(object sender, EventArgs e)
+		private void tsmiAdd_Click(object sender, EventArgs e)
+		{
+			handleInsertClick();
+		}
+
+		private void handleDeleteClick()
 		{
 			if (this.Node.Parent.Nodes.Count > 1 && this.Node.Index != 0)
 			{
@@ -1604,6 +1640,11 @@ namespace DMR
 			{
 				MessageBox.Show(Settings.dicCommon["FirstNotDelete"]);
 			}
+		}
+
+		private void tsmiDel_Click(object sender, EventArgs e)
+		{
+			handleDeleteClick();
 		}
 
 		private void method_6()
@@ -1633,6 +1674,46 @@ namespace DMR
 			ZoneForm.basicData = new BasicZone();
 			ZoneForm.data = new Zone();
 			ZoneForm.SPACE_BASIC_ZONE = Marshal.SizeOf(typeof(BasicZone));
+		}
+		
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == (Keys.Control | Keys.Right))
+			{
+				handleNextClick();
+				return true;
+			}
+			if (keyData == (Keys.Control | Keys.Left))
+			{
+				handlePreviousClick();
+				return true;
+			}
+
+			if ((keyData == (Keys.Control | Keys.Insert )) || (keyData == (Keys.Control | Keys.I)))
+			{
+				handleInsertClick();
+				return true;
+			}
+
+			if (keyData == (Keys.Control | Keys.Delete))
+			{
+				handleDeleteClick();
+				return true;
+			}
+
+			if (keyData == (Keys.Control | Keys.Up))
+			{
+				btnUp_Click();
+				return true;
+			}
+
+			if (keyData == (Keys.Control | Keys.Down))
+			{
+				btnDown_Click();
+				return true;
+			}
+
+			return base.ProcessCmdKey(ref msg, keyData);
 		}
 	}
 }

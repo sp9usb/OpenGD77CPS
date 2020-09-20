@@ -90,6 +90,7 @@
 			<Control Id="lblTxTone" Text="tonalité Tx [Hz]" />
 			<Control Id="chkDataPl" Text="PL pour Données" />
 			<Control Id="chkLoneWoker" Text="Lone Work" />
+      <Control Id="chkOpenGD77ScanAllSkip" Text="Scan: All skip" />
 			<Control Id="chkVox" Text="Vox" />
 			<Control Id="chkAutoScan" Text="Auto Scan" />
 			<Control Id="lblChName" Text="nom" />
@@ -435,6 +436,8 @@
       <MenuItem Id="tsmiContactsDownload" Text="Télécharger les contacts" />
       <MenuItem Id="tsmiDMRID" Text="DMR ID" />
       <MenuItem Id="tsmiCalibration" Text="étalonnage" />
+      <MenuItem Id="tsmiOpenGD77" Text="OpenGD77 support" />
+      <MenuItem Id="tsmiFirmwareLoader" Text="Firmware loader" />
     </MenuStrip>
 		<ContextMenuStrip>
 			<MenuItem Id="tsmiAdd" Text="Ajoute" />
@@ -652,6 +655,8 @@
 			<Control Id="lblTxTone" Text="Tonalité Tx [Hz]" />
 			<Control Id="chkDataPl" Text="Data PL" />
 			<Control Id="chkLoneWoker" Text="Lone Work" />
+      <Control Id="chkOpenGD77ScanAllSkip" Text="Scan: All skip" />
+      <Control Id="chkOpenGD77ScanZoneSkip" Text="Scan: Zone skip" />
 			<Control Id="chkVox" Text="Vox" />
 			<Control Id="chkAutoScan" Text="Scan Auto" />
 			<Control Id="lblChName" Text="Nom" />
@@ -791,7 +796,7 @@
     <Item Id="DownloadContactsImportComplete" Text="Importation terminée" />
     <Item Id="CodeplugUpgradeNotice" Text="Ceci existe depuis le CodePlug V3.0.6.Il peut être converti vers la version V3.1.x" />
     <Item Id="CodeplugUpgradeWarningToManyRxGroups" Text="La version 3.1.x peut avoir 76 Listes Groupe Rx.les suivantes seronts ignorées" />
-    <Item Id="IdAlreadyExists" Text="ID exixte deja！" />
+    <Item Id="IdAlreadyExists" Text="ID / TS exixte deja！" />
     <Item Id="IdOutOfRange" Text="ID impossible !" />
     <Item Id="IdNotEmpty" Text="ID vide !" />
     <Item Id="ContactNameDuplicate" Text="Warning. Contact en double." />

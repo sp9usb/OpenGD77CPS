@@ -93,6 +93,7 @@
 			<Control Id="chkVox" Text="VOX" />
 			<Control Id="chkAutoScan" Text="Auto Exploració" />
 			<Control Id="lblChName" Text="CH" />
+      <Control Id="chkOpenGD77ScanAllSkip" Text="Scan: All skip" />
       <Control Id="chkOpenGD77ScanZoneSkip" Text="Scan: Zone skip" />
 			<Control Id="lblChMode" Text="Mode" />
 			<Control Id="lblTot" Text="TOT [s]" />
@@ -435,6 +436,8 @@
       <MenuItem Id="tsmiContactsDownload" Text="Descarregar contactes" />
       <MenuItem Id="tsmiDMRID" Text="DMR ID" />
       <MenuItem Id="tsmiCalibration" Text="Calibració" />
+      <MenuItem Id="tsmiOpenGD77" Text="OpenGD77 support" />
+      <MenuItem Id="tsmiFirmwareLoader" Text="Firmware loader" />
     </MenuStrip>
 		<ContextMenuStrip>
 			<MenuItem Id="tsmiAdd" Text="Afegir" />
@@ -654,6 +657,8 @@
 			<Control Id="chkLoneWoker" Text="Treballador Aïllat" />
 			<Control Id="chkVox" Text="VOX" />
 			<Control Id="chkAutoScan" Text="Auto Exploració" />
+      <Control Id="chkOpenGD77ScanAllSkip" Text="Scan: All skip" />
+      <Control Id="chkOpenGD77ScanZoneSkip" Text="Scan: Zone skip" />
 			<Control Id="lblChName" Text="VFO" />
 			<Control Id="lblChMode" Text="Mode" />
 			<Control Id="lblTot" Text="TOT [s]" />
@@ -800,7 +805,7 @@
     <Item Id="DMRIDWrite" Text="Escrivint base de dades DMR ID al GD-77" />
     <Item Id="CalibrationRead" Text="Llegint calibracions del GD-77" />
     <Item Id="CalibrationWrite" Text="Escrivint calibracions al GD-77" />
-    <Item Id="IdAlreadyExists" Text="ID duplicada!" />
+    <Item Id="IdAlreadyExists" Text="ID / TS duplicada!" />
     <Item Id="IdOutOfRange" Text="ID fora de rang!" />
     <Item Id="IdNotEmpty" Text="ID no pot estar buida!" />
     <Item Id="ContactNameDuplicate" Text="Atenció. Nom de contacte duplicat." />

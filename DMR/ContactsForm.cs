@@ -72,13 +72,13 @@ namespace DMR
 			this.txtName = new DMR.SGTextBox();
 			this.cmbCallRxTone = new System.Windows.Forms.ComboBox();
 			this.cmbRingStyle = new System.Windows.Forms.ComboBox();
-			this.cmbRepeaterSlot = new System.Windows.Forms.ComboBox();
 			this.cmbType = new System.Windows.Forms.ComboBox();
 			this.cmbAddType = new CustomCombo();
 			this.btnClear = new System.Windows.Forms.Button();
 			this.btnDelete = new System.Windows.Forms.Button();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.dgvContacts = new System.Windows.Forms.DataGridView();
+			this.cmbRepeaterSlot = new System.Windows.Forms.ComboBox();
 			this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -213,17 +213,6 @@ namespace DMR
 			this.cmbAddType.Name = "cmbAddType";
 			this.cmbAddType.Size = new System.Drawing.Size(112, 24);
 			this.cmbAddType.TabIndex = 0;
-
-			// 
-			// cmbAddType
-			// 
-			this.cmbRepeaterSlot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cmbRepeaterSlot.FormattingEnabled = true;
-			this.cmbRepeaterSlot.Location = new System.Drawing.Point(22, 43);
-			this.cmbRepeaterSlot.Name = "cmbRepeaterSlot";
-			this.cmbRepeaterSlot.Size = new System.Drawing.Size(112, 24);
-			this.cmbRepeaterSlot.TabIndex = 0;
-
 			// 
 			// btnClear
 			// 
@@ -268,6 +257,16 @@ namespace DMR
 			this.dgvContacts.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvContacts_RowHeaderMouseDoubleClick);
 			this.dgvContacts.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dgvContacts_RowPostPaint);
 			this.dgvContacts.SelectionChanged += new System.EventHandler(this.dgvContacts_SelectionChanged);
+			this.dgvContacts.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dgvContacts_KeyPress);
+			// 
+			// cmbRepeaterSlot
+			// 
+			this.cmbRepeaterSlot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbRepeaterSlot.FormattingEnabled = true;
+			this.cmbRepeaterSlot.Location = new System.Drawing.Point(22, 43);
+			this.cmbRepeaterSlot.Name = "cmbRepeaterSlot";
+			this.cmbRepeaterSlot.Size = new System.Drawing.Size(112, 21);
+			this.cmbRepeaterSlot.TabIndex = 0;
 			// 
 			// dataGridViewTextBoxColumn1
 			// 
@@ -316,7 +315,7 @@ namespace DMR
 
 		public void SaveData()
 		{
-			this.dgvContacts.Focus();
+			//this.dgvContacts.Focus();
 		}
 
 		public void DispData()
@@ -394,55 +393,12 @@ namespace DMR
 
 		private void btnAdd_Click(object sender, EventArgs e)
 		{
-			int selectedIndex = this.cmbAddType.SelectedIndex;
-			int minIndex = ContactForm.data.GetMinIndex();
-			MainForm mainForm = base.MdiParent as MainForm;
-			string minCallID = ContactForm.data.GetMinCallID(selectedIndex, minIndex);
-			string minName = ContactForm.data.GetMinName(this.Node);
-			string callRxToneS = ContactForm.DefaultContact.CallRxToneS;
-			string ringStyleS = ContactForm.DefaultContact.RingStyleS;
-			string text = this.cmbAddType.Text;
-			ContactForm.data.SetIndex(minIndex, 1);
-			ContactForm.ContactOne value = new ContactForm.ContactOne(minIndex);
-			value.Name = minName;
-			value.CallId = minCallID;
-			value.CallTypeS = text;
-			value.RingStyleS = ringStyleS;
-			value.CallRxToneS = callRxToneS;
-			ContactForm.data[minIndex] = value;
-			this.dgvContacts.Rows.Insert(minIndex, (minIndex + 1).ToString(), minName, minCallID, text, ringStyleS, callRxToneS);
-			this.dgvContacts.Rows[minIndex].Tag = minIndex;
-			this.method_1();
-			int[] array = new int[3]
-			{
-				8,
-				10,
-				7
-			};
-			mainForm.InsertTreeViewNode(this.Node, minIndex, typeof(ContactForm), array[selectedIndex], ContactForm.data);
-			mainForm.RefreshRelatedForm(base.GetType());
+			handleInsertClick();
 		}
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			if (this.dgvContacts.CurrentRow != null && this.dgvContacts.CurrentRow.Tag != null)
-			{
-				int index = this.dgvContacts.CurrentRow.Index;
-				int index2 = (int)this.dgvContacts.CurrentRow.Tag;
-				if (index == 0)
-				{
-					MessageBox.Show(Settings.dicCommon["FirstNotDelete"]);
-				}
-				else
-				{
-					this.dgvContacts.Rows.Remove(this.dgvContacts.CurrentRow);
-					ContactForm.data.ClearIndex(index2);
-					this.method_1();
-					MainForm mainForm = base.MdiParent as MainForm;
-					mainForm.DeleteTreeViewNode(this.Node, index);
-					mainForm.RefreshRelatedForm(base.GetType());
-				}
-			}
+			handleDeleteClick();
 		}
 
 		private void btnClear_Click(object sender, EventArgs e)
@@ -879,5 +835,95 @@ namespace DMR
 				return;
 			}
 		}
+
+		private void dgvContacts_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == 32)
+			{
+				MainForm mainForm = base.MdiParent as MainForm;
+				DataGridView dataGridView = sender as DataGridView;
+				DataGridViewSelectedRowCollection rows = dataGridView.SelectedRows;
+				foreach (DataGridViewRow row in rows)
+				{
+					int index = (int)row.Tag;
+					mainForm.DispChildForm(typeof(ContactForm), index);
+					break;
+				}
+			}
+		}
+
+		private void handleInsertClick()
+        {
+			int selectedIndex = this.cmbAddType.SelectedIndex;
+			int minIndex = ContactForm.data.GetMinIndex();
+			MainForm mainForm = base.MdiParent as MainForm;
+			string minCallID = ContactForm.data.GetMinCallID(selectedIndex, minIndex);
+			string minName = ContactForm.data.GetMinName(this.Node);
+			string callRxToneS = ContactForm.DefaultContact.CallRxToneS;
+			string ringStyleS = ContactForm.DefaultContact.RingStyleS;
+			string text = this.cmbAddType.Text;
+			ContactForm.data.SetIndex(minIndex, 1);
+			ContactForm.ContactOne value = new ContactForm.ContactOne(minIndex);
+			value.Name = minName;
+			value.CallId = minCallID;
+			value.CallTypeS = text;
+			value.RingStyleS = ringStyleS;
+			value.CallRxToneS = callRxToneS;
+			ContactForm.data[minIndex] = value;
+			this.dgvContacts.Rows.Insert(minIndex, (minIndex + 1).ToString(), minName, minCallID, text, ringStyleS, callRxToneS);
+			this.dgvContacts.Rows[minIndex].Tag = minIndex;
+			this.method_1();
+			int[] array = new int[3]
+			{
+				8,
+				10,
+				7
+			};
+			mainForm.InsertTreeViewNode(this.Node, minIndex, typeof(ContactForm), array[selectedIndex], ContactForm.data);
+			mainForm.RefreshRelatedForm(base.GetType());
+
+			mainForm.DispChildForm(typeof(ContactForm), minIndex);
+		}
+
+		private void handleDeleteClick()
+        {
+			if (this.dgvContacts.CurrentRow != null && this.dgvContacts.CurrentRow.Tag != null)
+			{
+				int index = this.dgvContacts.CurrentRow.Index;
+				int index2 = (int)this.dgvContacts.CurrentRow.Tag;
+				if (index == 0)
+				{
+					MessageBox.Show(Settings.dicCommon["FirstNotDelete"]);
+				}
+				else
+				{
+					this.dgvContacts.Rows.Remove(this.dgvContacts.CurrentRow);
+					ContactForm.data.ClearIndex(index2);
+					this.method_1();
+					MainForm mainForm = base.MdiParent as MainForm;
+					mainForm.DeleteTreeViewNode(this.Node, index);
+					mainForm.RefreshRelatedForm(base.GetType());
+				}
+			}
+		}
+
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if ((keyData == (Keys.Control | Keys.Insert)) || (keyData == (Keys.Control | Keys.I)))
+			{
+				handleInsertClick();
+				return true;
+			}
+
+			if (keyData == (Keys.Control | Keys.Delete))
+			{
+				handleDeleteClick();
+				return true;
+			}
+
+
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
 	}
 }
