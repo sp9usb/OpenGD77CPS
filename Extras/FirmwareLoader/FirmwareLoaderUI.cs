@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using System.Text.RegularExpressions;
+using Extras.FirmwareLoader;
 
 namespace DMR
 {
@@ -59,6 +60,7 @@ namespace DMR
 		public bool IsLoading = false;
 		private static String tempFile = "";
 		private WebClientAsync wc = null;
+		private FirmwareLoader.OutputType _selectedRadio;
 
 		public FirmwareLoaderUI()
 		{
@@ -151,7 +153,8 @@ namespace DMR
 			{
 				if (rb.Checked)
 				{
-					FirmwareLoader.outputType = (FirmwareLoader.OutputType)rb.Tag;
+					_selectedRadio = (FirmwareLoader.OutputType)rb.Tag;
+					FirmwareLoader.outputType = _selectedRadio;
 					this.btnDownloadFirmware.Enabled = true;
 					this.btnUploadFirmware.Enabled = true;
 				}
@@ -391,6 +394,7 @@ namespace DMR
 					message = "It will download and install a firmware.\n\nPlease make you choice.";
 				}
 
+				ShowInformationHowToSetupTheRadioBeforeFirmwareUploadFor(_selectedRadio);
 				DialogResult res = DialogBox("Select version", message, buttonsLabel[0], buttonsLabel[1]);
 
 				switch (res)
@@ -560,6 +564,8 @@ namespace DMR
 
 			if (openFileDialog.ShowDialog() == DialogResult.OK && openFileDialog.FileName != null)
 			{
+				ShowInformationHowToSetupTheRadioBeforeFirmwareUploadFor(_selectedRadio);
+
 				IniFileUtils.WriteProfileString("Setup", "LastFirmwareLocation", Path.GetDirectoryName(openFileDialog.FileName));
 
 				this.lblMessage.Text = "";
@@ -584,6 +590,13 @@ namespace DMR
 				}
 
 			}
+		}
+
+		private void ShowInformationHowToSetupTheRadioBeforeFirmwareUploadFor(FirmwareLoader.OutputType selectedRadio)
+		{
+			var informationForm = new InformationAboutSetRadioToLoadingFirmwareUI(selectedRadio);
+			informationForm.ShowDialog();
+			informationForm.Dispose();
 		}
 
 		private void FirmwareLoaderUI_FormClosing(object sender, FormClosingEventArgs e)
